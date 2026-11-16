@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>六合彩高阶胜率预测看板</title>
-<!-- ★★★ 引入 Supabase 客户端库 -->
+<!-- 引入 Supabase 客户端库 -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
     :root {
@@ -123,40 +123,6 @@
     
     .rank-right { display: flex; flex-direction: column; align-items: flex-end; justify-content: center; gap: 4px; }
     .rank-rate { font-size: 18px; font-weight: 900; color: var(--success); }
-    .rank-like {
-        font-size: 11px; font-weight: 700; color: var(--text-2);
-        background: #F3F4F6; padding: 2px 8px; border-radius: 12px;
-        display: flex; align-items: center; gap: 4px; cursor: pointer;
-    }
-    .rank-like.liked { color: var(--danger); background: #FFF1F2; border-color: #FECDD3; }
-
-    /* 评论区 */
-    .comment-section { padding: 0 14px 20px 14px; }
-    .comment-input-box { display: flex; gap: 8px; margin-bottom: 12px; }
-    .comment-input-box input {
-        flex: 1; padding: 10px; border-radius: 8px; border: 1px solid var(--line);
-        font-size: 13px; outline: none; background: #FAFAF8;
-    }
-    .comment-input-box input:focus { border-color: var(--primary); background: #fff; }
-    .btn-send {
-        background: var(--primary); color: #fff; border: none; border-radius: 8px;
-        padding: 0 16px; font-weight: bold; cursor: pointer; font-size: 13px;
-    }
-    .comment-list { display: flex; flex-direction: column; gap: 10px; }
-    .comment-item {
-        background: #fff; border: 1px solid var(--line); padding: 10px;
-        border-radius: 10px; display: flex; gap: 10px;
-    }
-    .avatar {
-        width: 32px; height: 32px; border-radius: 50%; background: #E0E7FF;
-        color: var(--primary); display: flex; justify-content: center; align-items: center;
-        font-weight: 900; font-size: 14px; flex-shrink: 0;
-    }
-    .comment-content { flex: 1; }
-    .comment-header { display: flex; justify-content: space-between; margin-bottom: 4px; }
-    .c-name { font-size: 12px; font-weight: 900; color: var(--primary-deep); }
-    .c-time { font-size: 10px; color: var(--dim); }
-    .c-text { font-size: 13px; color: var(--text-2); line-height: 1.4; word-break: break-all; }
 
     /* 全屏帖子 */
     .post-page {
@@ -187,11 +153,19 @@
         padding: 4px 8px; font-size: 11px; border-radius: 6px; border: 1px solid var(--line);
         outline: none; background: #F9FAFB; color: var(--text-2); font-weight: 700;
     }
+    
+    /* 🌟 历史明细改为可滚动 */
     .history-container { padding: 0 14px 20px 14px; }
     .history-list {
         display: flex; flex-direction: column; gap: 6px;
         border: 1px solid var(--line); border-radius: 12px; padding: 10px; background: #FAFAF8;
+        max-height: 350px; /* 限制高度 */
+        overflow-y: auto;  /* 开启滚动 */
     }
+    /* 美化滚动条 */
+    .history-list::-webkit-scrollbar { width: 4px; }
+    .history-list::-webkit-scrollbar-thumb { background: #D1D5DB; border-radius: 4px; }
+    
     .detail-item {
         display: flex; justify-content: space-between; align-items: center;
         padding: 8px 10px; border-radius: 8px; background: #fff;
@@ -207,6 +181,34 @@
     .d-calc { color: var(--danger); font-weight: 700; flex: 1; margin-left: 5px;}
     .d-actual { color: var(--text-2); width: 85px; text-align: right;}
     .d-icon { width: 20px; text-align: right; font-size: 14px;}
+
+    /* 🌟 评论区（已移到帖子内） */
+    .comment-section { padding: 0 14px 30px 14px; }
+    .comment-input-box { display: flex; gap: 8px; margin-bottom: 12px; }
+    .comment-input-box input {
+        flex: 1; padding: 10px; border-radius: 8px; border: 1px solid var(--line);
+        font-size: 13px; outline: none; background: #FAFAF8;
+    }
+    .comment-input-box input:focus { border-color: var(--primary); background: #fff; }
+    .btn-send {
+        background: var(--primary); color: #fff; border: none; border-radius: 8px;
+        padding: 0 16px; font-weight: bold; cursor: pointer; font-size: 13px;
+    }
+    .comment-list { display: flex; flex-direction: column; gap: 10px; }
+    .comment-item {
+        background: #fff; border: 1px solid var(--line); padding: 10px;
+        border-radius: 10px; display: flex; gap: 10px;
+    }
+    .avatar {
+        width: 32px; height: 32px; border-radius: 50%; background: #E0E7FF;
+        color: var(--primary); display: flex; justify-content: center; align-items: center;
+        font-weight: 900; font-size: 14px; flex-shrink: 0;
+    }
+    .comment-content { flex: 1; }
+    .comment-header { display: flex; justify-content: space-between; margin-bottom: 4px; }
+    .c-name { font-size: 12px; font-weight: 900; color: var(--primary-deep); }
+    .c-time { font-size: 10px; color: var(--dim); }
+    .c-text { font-size: 13px; color: var(--text-2); line-height: 1.4; word-break: break-all; }
 
     /* 模态框与加载遮罩 */
     .modal {
@@ -254,6 +256,7 @@
 <body>
 
 <div class="app">
+    <!-- ======================= 大厅主页 ======================= -->
     <div id="mainHall">
         <div class="topbar">
             <div class="topbar-title">🎯 高阶算法大厅</div>
@@ -280,19 +283,9 @@
             <span style="font-size:11px; color:var(--dim); font-weight:normal;">点击查看帖子详情</span>
         </div>
         <div class="rank-list" id="rankList"></div>
-
-        <div class="section-title" id="commentTitle" style="display:none;">
-            <span>💬 大厅讨论区</span>
-        </div>
-        <div class="comment-section" id="commentSection" style="display:none;">
-            <div class="comment-input-box">
-                <input type="text" id="commentInput" placeholder="说点什么... (需登录)" disabled>
-                <button class="btn-send" onclick="submitComment()">发送</button>
-            </div>
-            <div class="comment-list" id="commentList"></div>
-        </div>
     </div>
 
+    <!-- ======================= 帖子详情页 (全屏滑入) ======================= -->
     <div class="post-page" id="postPage">
         <div class="post-header">
             <button class="btn-back" onclick="closePost()">❮ 返回</button>
@@ -304,6 +297,7 @@
             <div id="postBalls"></div>
         </div>
 
+        <!-- 预测黑卡 -->
         <div style="background: linear-gradient(135deg, #1E1E1E 0%, #0A0A0A 100%); border-radius: 16px; margin: 14px; padding: 24px 16px; text-align: center; box-shadow: 0 8px 20px -6px rgba(0,0,0,0.4);">
             <div id="mpName" style="font-size: 22px; font-weight: 900; color: #FDE047; margin-bottom: 16px; text-shadow: 0 0 10px rgba(253,224,71,0.4);">
                 👑 绝世高手
@@ -318,6 +312,7 @@
             </div>
         </div>
 
+        <!-- 历史明细 (限制高度，可滚动) -->
         <div class="section-title">
             <span>📊 历史战绩明细</span>
             <select id="historyLimitSelect" class="history-limit-select" onchange="changeHistoryLimit()">
@@ -332,9 +327,22 @@
         <div class="history-container">
             <div class="history-list" id="historyList"></div>
         </div>
+
+        <!-- 🌟 评论区（移至帖子内） -->
+        <div class="section-title">
+            <span>💬 网友讨论区</span>
+        </div>
+        <div class="comment-section">
+            <div class="comment-input-box">
+                <input type="text" id="commentInput" placeholder="说点什么... (需登录)" disabled>
+                <button class="btn-send" onclick="submitComment()">发送</button>
+            </div>
+            <div class="comment-list" id="commentList"></div>
+        </div>
     </div>
 </div>
 
+<!-- 登录/注册弹窗 -->
 <div class="modal" id="authModal">
     <div class="modal-content">
         <button class="modal-close" onclick="closeAuthModal()">×</button>
@@ -346,6 +354,7 @@
     </div>
 </div>
 
+<!-- 加载遮罩 -->
 <div class="loading-overlay" id="loadingOverlay">
     <div class="spinner"></div>
     <div id="loadingText">正在同步最新数据...</div>
@@ -535,22 +544,15 @@ async function handleAuth() {
     btn.disabled = true; btn.textContent = '处理中...';
 
     try {
-        // 这里为了简单，我们用自建表模拟注册登录，实际可以用 Supabase Auth，但为了通俗易懂，我们存到 profiles 表里（这里简化处理，直接在前端验证密码，真实项目请用加密）
-        // 由于你之前建的是 comments 表，我们直接用评论表来演示最简单。如果是正经项目，建议用 Supabase 官方的 Auth 系统。
-        
-        // 简化的注册/登录逻辑：
         if (isLoginMode) {
-            // 从数据库中查这个用户
             const { data, error } = await supabaseClient.from('users_db').select('*').eq('username', user).single();
             if (error && error.code !== 'PGRST116') throw error;
             if (!data) return alert('该用户不存在，请先注册');
             if (data.password !== pass) return alert('密码错误');
         } else {
-            // 检查是否已存在
             const { data } = await supabaseClient.from('users_db').select('*').eq('username', user).single();
             if (data) return alert('该用户名已被注册');
             
-            // 插入新用户
             const { error } = await supabaseClient.from('users_db').insert([{ username: user, password: pass }]);
             if (error) throw error;
         }
@@ -569,15 +571,21 @@ async function handleAuth() {
     }
 }
 
+// 🌟 现在获取评论会按照公式名字来过滤
 async function fetchComments() {
-    if (!supabaseClient) return;
+    if (!supabaseClient || !currentPostData) return;
     try {
-        const { data, error } = await supabaseClient.from('comments').select('*').order('created_at', { ascending: false }).limit(20);
+        const { data, error } = await supabaseClient.from('comments')
+            .select('*')
+            .eq('formula_name', currentPostData.name)
+            .order('created_at', { ascending: false })
+            .limit(20);
+            
         if (error) throw error;
         
         const list = document.getElementById('commentList');
         if (data.length === 0) {
-            list.innerHTML = `<div style="text-align:center; padding:10px; color:var(--dim); font-size:12px;">暂无评论，快来抢沙发~</div>`;
+            list.innerHTML = `<div style="text-align:center; padding:10px; color:var(--dim); font-size:12px;">该公式暂无评论，快来抢沙发~</div>`;
             return;
         }
 
@@ -601,9 +609,11 @@ async function fetchComments() {
     }
 }
 
+// 🌟 提交评论时带上公式名字
 async function submitComment() {
     if (!currentCloudUser) return alert('请先登录！');
     if (!supabaseClient) return alert('请先配置数据库！');
+    if (!currentPostData) return;
     
     const input = document.getElementById('commentInput');
     const text = input.value.trim();
@@ -612,7 +622,11 @@ async function submitComment() {
     input.disabled = true;
     try {
         const { error } = await supabaseClient.from('comments').insert([
-            { user_name: currentCloudUser, content: text }
+            { 
+                user_name: currentCloudUser, 
+                content: text,
+                formula_name: currentPostData.name // 🌟 绑定公式
+            }
         ]);
         if (error) throw error;
         input.value = '';
@@ -639,7 +653,6 @@ let latestDrawSpecial = 0;
 
 document.addEventListener('DOMContentLoaded', () => {
     updateUserUI();
-    if (supabaseClient) fetchComments();
     refreshData(true);
 });
 
@@ -916,8 +929,6 @@ function setCategory(cat) {
     if (activeTab) activeTab.classList.add('active');
 
     document.getElementById('rankTitle').style.display = 'flex';
-    document.getElementById('commentTitle').style.display = 'flex';
-    document.getElementById('commentSection').style.display = 'block';
     document.getElementById('rankTitleText').textContent = `🏆 ${CAT_MAP[cat]}胜率榜`;
 
     if (filteredResults.length === 0) {
@@ -996,6 +1007,10 @@ function openPost(index) {
         }).join('');
 
         document.getElementById('postPage').classList.add('show');
+        
+        // 🌟 每次打开帖子，加载该公式的专属评论
+        fetchComments();
+        
     } catch(e) {
         console.error(e);
     }
