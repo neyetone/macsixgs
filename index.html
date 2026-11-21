@@ -55,7 +55,6 @@
     .btn-user {
         background: #F3E8FF; color: #7E22CE; border: 1px solid #D8B4FE;
         padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 800; cursor: pointer;
-        transition: all 0.2s;
     }
     .btn-refresh {
         background: #EFF6FF; color: var(--primary); border: 1px solid #BFDBFE;
@@ -125,18 +124,16 @@
     .rank-right { display: flex; flex-direction: column; align-items: flex-end; justify-content: center; gap: 4px; }
     .rank-rate { font-size: 18px; font-weight: 900; color: var(--success); }
 
-    /* ============================================================
-       全屏通用页面 (帖子/会员中心)
-       ============================================================ */
-    .page-container {
+    /* 全屏帖子 */
+    .post-page {
         position: absolute; inset: 0; background: var(--bg); z-index: 200;
         display: flex; flex-direction: column;
         transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         overflow-y: auto; overflow-x: hidden;
     }
-    .page-container.show { transform: translateX(0); }
+    .post-page.show { transform: translateX(0); }
     
-    .page-header {
+    .post-header {
         position: sticky; top: 0; z-index: 10;
         background: #fff; padding: 16px 20px; display: flex; align-items: center;
         border-bottom: 1px solid var(--line); gap: 12px;
@@ -145,22 +142,27 @@
         background: none; border: none; font-size: 16px; font-weight: 900;
         color: var(--primary-deep); cursor: pointer; display: flex; align-items: center; gap: 4px;
     }
-    .page-title-name { flex: 1; font-size: 16px; font-weight: 900; color: var(--primary-deep); text-align: center; margin-right: 20px;}
+    .post-title-name { flex: 1; font-size: 16px; font-weight: 900; color: var(--primary-deep); text-align: center; margin-right: 20px;}
 
-    /* 帖子详情内容 */
-    .latest-draw-section { text-align: center; padding: 16px 10px; background: #fff; border-bottom: 1px solid var(--line); }
+    .latest-draw-section {
+        text-align: center; padding: 16px 10px; background: #fff; border-bottom: 1px solid var(--line);
+    }
     .ld-title { font-size: 12px; font-weight: 900; color: var(--dim); margin-bottom: 12px; }
 
     .history-limit-select {
         padding: 4px 8px; font-size: 11px; border-radius: 6px; border: 1px solid var(--line);
         outline: none; background: #F9FAFB; color: var(--text-2); font-weight: 700;
     }
+    
+    /* 🌟 历史明细改为可滚动 */
     .history-container { padding: 0 14px 20px 14px; }
     .history-list {
         display: flex; flex-direction: column; gap: 6px;
         border: 1px solid var(--line); border-radius: 12px; padding: 10px; background: #FAFAF8;
-        max-height: 350px; overflow-y: auto;
+        max-height: 350px; /* 限制高度 */
+        overflow-y: auto;  /* 开启滚动 */
     }
+    /* 美化滚动条 */
     .history-list::-webkit-scrollbar { width: 4px; }
     .history-list::-webkit-scrollbar-thumb { background: #D1D5DB; border-radius: 4px; }
     
@@ -171,14 +173,16 @@
     }
     .detail-item.hit { border-left: 3px solid var(--success); }
     .detail-item.miss { border-left: 3px solid var(--danger); }
+    
     .d-left { display: flex; align-items: center; gap: 6px; width: 150px; flex-shrink: 0; }
     .d-period { font-weight: 900; color: var(--primary-deep); }
     .d-name { font-size: 10px; color: var(--dim); font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    
     .d-calc { color: var(--danger); font-weight: 700; flex: 1; margin-left: 5px;}
     .d-actual { color: var(--text-2); width: 85px; text-align: right;}
     .d-icon { width: 20px; text-align: right; font-size: 14px;}
 
-    /* 评论区 */
+    /* 🌟 评论区（已移到帖子内） */
     .comment-section { padding: 0 14px 30px 14px; }
     .comment-input-box { display: flex; gap: 8px; margin-bottom: 12px; }
     .comment-input-box input {
@@ -205,50 +209,6 @@
     .c-name { font-size: 12px; font-weight: 900; color: var(--primary-deep); }
     .c-time { font-size: 10px; color: var(--dim); }
     .c-text { font-size: 13px; color: var(--text-2); line-height: 1.4; word-break: break-all; }
-
-    /* ============================================================
-       会员中心专属样式
-       ============================================================ */
-    .user-profile-card {
-        background: #fff; border-radius: 16px; padding: 20px; margin: 14px;
-        display: flex; align-items: center; gap: 16px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    }
-    .user-avatar-lg {
-        width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #1D4ED8, #7E22CE);
-        color: #fff; font-size: 24px; font-weight: 900; display: flex; justify-content: center; align-items: center;
-    }
-    .user-info h3 { font-size: 18px; font-weight: 900; color: var(--primary-deep); margin-bottom: 4px; }
-    .user-info p { font-size: 12px; color: var(--dim); }
-
-    .member-section {
-        margin: 0 14px 14px 14px; background: #fff; border-radius: 12px; border: 1px solid var(--line); overflow: hidden;
-    }
-    .member-tabs {
-        display: flex; border-bottom: 1px solid var(--line);
-    }
-    .member-tab {
-        flex: 1; text-align: center; padding: 12px 0; font-size: 14px; font-weight: 900; color: var(--text-2);
-        cursor: pointer; background: #FAFAF8; transition: all 0.2s;
-    }
-    .member-tab.active { color: var(--primary); background: #fff; border-bottom: 2px solid var(--primary); }
-    
-    .member-list { padding: 14px; max-height: 400px; overflow-y: auto; }
-    .member-item {
-        border-bottom: 1px solid var(--line); padding-bottom: 10px; margin-bottom: 10px;
-    }
-    .member-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-    .mi-header { display: flex; justify-content: space-between; margin-bottom: 4px; }
-    .mi-title { font-size: 13px; font-weight: 900; color: var(--primary-deep); }
-    .mi-time { font-size: 10px; color: var(--dim); }
-    .mi-content { font-size: 13px; color: var(--text-2); line-height: 1.4; }
-    .mi-formula { display: inline-block; font-size: 11px; background: #EFF6FF; color: var(--primary); padding: 2px 6px; border-radius: 4px; margin-top: 6px; }
-
-    .btn-logout {
-        display: block; width: calc(100% - 28px); margin: 20px 14px; padding: 14px;
-        background: #FFF1F2; color: var(--danger); border: 1px solid #FECDD3;
-        border-radius: 12px; font-size: 15px; font-weight: 900; cursor: pointer;
-    }
 
     /* 模态框与加载遮罩 */
     .modal {
@@ -302,7 +262,7 @@
             <div class="topbar-title">🎯 高阶算法大厅</div>
             <div class="topbar-right">
                 <button class="btn-refresh" onclick="refreshData()">🔄 刷新</button>
-                <button class="btn-user" id="btnUser" onclick="handleUserBtnClick()">登录/注册</button>
+                <button class="btn-user" id="btnUser" onclick="openAuthModal()">登录/注册</button>
             </div>
         </div>
         
@@ -325,11 +285,11 @@
         <div class="rank-list" id="rankList"></div>
     </div>
 
-    <!-- ======================= 帖子详情页 ======================= -->
-    <div class="page-container" id="postPage">
-        <div class="page-header">
-            <button class="btn-back" onclick="closePage('postPage')">❮ 返回</button>
-            <div class="page-title-name" id="postTitleName">公式名称</div>
+    <!-- ======================= 帖子详情页 (全屏滑入) ======================= -->
+    <div class="post-page" id="postPage">
+        <div class="post-header">
+            <button class="btn-back" onclick="closePost()">❮ 返回</button>
+            <div class="post-title-name" id="postTitleName">公式名称</div>
         </div>
 
         <div class="latest-draw-section">
@@ -352,7 +312,7 @@
             </div>
         </div>
 
-        <!-- 历史明细 -->
+        <!-- 历史明细 (限制高度，可滚动) -->
         <div class="section-title">
             <span>📊 历史战绩明细</span>
             <select id="historyLimitSelect" class="history-limit-select" onchange="changeHistoryLimit()">
@@ -368,7 +328,7 @@
             <div class="history-list" id="historyList"></div>
         </div>
 
-        <!-- 评论区 -->
+        <!-- 🌟 评论区（移至帖子内） -->
         <div class="section-title">
             <span>💬 网友讨论区</span>
         </div>
@@ -379,34 +339,6 @@
             </div>
             <div class="comment-list" id="commentList"></div>
         </div>
-    </div>
-
-    <!-- ======================= 会员中心页 ======================= -->
-    <div class="page-container" id="memberPage">
-        <div class="page-header">
-            <button class="btn-back" onclick="closePage('memberPage')">❮ 返回</button>
-            <div class="page-title-name">会员中心</div>
-        </div>
-
-        <div class="user-profile-card">
-            <div class="user-avatar-lg" id="mcAvatar">U</div>
-            <div class="user-info">
-                <h3 id="mcUsername">用户名</h3>
-                <p>尊贵的高阶预测会员</p>
-            </div>
-        </div>
-
-        <div class="member-section">
-            <div class="member-tabs">
-                <div class="member-tab active" id="tab-comments" onclick="switchMemberTab('comments')">我的评论</div>
-                <div class="member-tab" id="tab-likes" onclick="switchMemberTab('likes')">我的点赞</div>
-            </div>
-            <div class="member-list" id="mcContentList">
-                <!-- 动态渲染 -->
-            </div>
-        </div>
-
-        <button class="btn-logout" onclick="logout()">退出登录</button>
     </div>
 </div>
 
@@ -432,8 +364,7 @@
 /* ============================================================
  *  ★★★ 在这里填入你的 Supabase 参数 ★★★
  * ============================================================ */
-const SUPABASE_URL = 'https://qeduhmqdtiusgqpwxhlm.supabase.co
-: 'https://abcdefghijk.supabase.co'
+const SUPABASE_URL = 'https://qeduhmqdtiusgqpwxhlm.supabase.co'; // 例如: 'https://abcdefghijk.supabase.co'
 const SUPABASE_KEY = 'sb_publishable_WARI1GTMbw3WIxSsyqDcbQ_OFFobuXP'; // 以 eyJ 开头的一大串
 
 // 初始化 Supabase
@@ -575,29 +506,23 @@ function updateUserUI() {
     if (currentCloudUser) {
         btnUser.textContent = `👤 ${currentCloudUser}`;
         btnUser.style.background = '#F0FDF4'; btnUser.style.color = '#166534'; btnUser.style.borderColor = '#BBF7D0';
-        if(input) {
-            input.disabled = false; 
-            input.placeholder = `以 ${currentCloudUser} 的身份发表看法...`;
-        }
+        input.disabled = false; input.placeholder = `以 ${currentCloudUser} 的身份发表看法...`;
     } else {
         btnUser.textContent = '登录/注册';
         btnUser.style.background = '#F3E8FF'; btnUser.style.color = '#7E22CE'; btnUser.style.borderColor = '#D8B4FE';
-        if(input) {
-            input.disabled = true; 
-            input.placeholder = '请先登录后再发表评论';
-        }
-    }
-}
-
-function handleUserBtnClick() {
-    if (currentCloudUser) {
-        openMemberCenter(); // 如果已登录，打开会员中心
-    } else {
-        openAuthModal(); // 否则打开登录框
+        input.disabled = true; input.placeholder = '请先登录后再发表评论';
     }
 }
 
 function openAuthModal() {
+    if (currentCloudUser) {
+        if (confirm('是否退出当前账号？')) {
+            currentCloudUser = null;
+            localStorage.removeItem('sb_current_user');
+            updateUserUI(); fetchComments(); // 重新加载评论
+        }
+        return;
+    }
     document.getElementById('authModal').classList.add('show');
 }
 function closeAuthModal() { document.getElementById('authModal').classList.remove('show'); }
@@ -635,13 +560,7 @@ async function handleAuth() {
         currentCloudUser = user;
         localStorage.setItem('sb_current_user', user);
         
-        closeAuthModal(); updateUserUI(); 
-        
-        // 如果当前在帖子内，刷新帖子评论
-        if (document.getElementById('postPage').classList.contains('show')) {
-            fetchComments();
-        }
-
+        closeAuthModal(); updateUserUI(); fetchComments();
         document.getElementById('authUser').value = '';
         document.getElementById('authPass').value = '';
     } catch (err) {
@@ -652,114 +571,7 @@ async function handleAuth() {
     }
 }
 
-function logout() {
-    if(confirm('确定要退出登录吗？')) {
-        currentCloudUser = null;
-        localStorage.removeItem('sb_current_user');
-        updateUserUI();
-        closePage('memberPage');
-    }
-}
-
-/* ============================================================
- *  会员中心逻辑
- * ============================================================ */
-let currentMemberTab = 'comments';
-
-function openMemberCenter() {
-    if (!currentCloudUser) return;
-    
-    // 渲染基础信息
-    document.getElementById('mcUsername').textContent = currentCloudUser;
-    document.getElementById('mcAvatar').textContent = currentCloudUser.charAt(0).toUpperCase();
-    
-    // 默认打开评论页
-    switchMemberTab('comments');
-    
-    document.getElementById('memberPage').classList.add('show');
-}
-
-function switchMemberTab(tab) {
-    currentMemberTab = tab;
-    document.getElementById('tab-comments').classList.toggle('active', tab === 'comments');
-    document.getElementById('tab-likes').classList.toggle('active', tab === 'likes');
-    
-    const list = document.getElementById('mcContentList');
-    list.innerHTML = '<div style="text-align:center; padding:20px; color:var(--dim);">加载中...</div>';
-
-    if (tab === 'comments') {
-        loadMyComments(list);
-    } else {
-        loadMyLikes(list);
-    }
-}
-
-async function loadMyComments(container) {
-    if (!supabaseClient) return;
-    try {
-        const { data, error } = await supabaseClient.from('comments')
-            .select('*')
-            .eq('user_name', currentCloudUser)
-            .order('created_at', { ascending: false });
-            
-        if (error) throw error;
-        
-        if (data.length === 0) {
-            container.innerHTML = '<div style="text-align:center; padding:20px; color:var(--dim); font-size:12px;">你还没有发表过评论</div>';
-            return;
-        }
-
-        container.innerHTML = data.map(c => {
-            const d = new Date(c.created_at);
-            const timeStr = `${d.getMonth()+1}月${d.getDate()}日 ${d.getHours()}:${d.getMinutes().toString().padStart(2, '0')}`;
-            return `
-            <div class="member-item">
-                <div class="mi-header">
-                    <span class="mi-title">${c.formula_name || '历史评论'}</span>
-                    <span class="mi-time">${timeStr}</span>
-                </div>
-                <div class="mi-content">${c.content}</div>
-            </div>`;
-        }).join('');
-    } catch(e) {
-        container.innerHTML = '<div style="text-align:center; color:var(--danger); padding:10px;">加载评论失败</div>';
-    }
-}
-
-function loadMyLikes(container) {
-    // 从本地存储获取点赞数据
-    let data = localStorage.getItem('lottery_formula_likes_v1');
-    if (!data) {
-        container.innerHTML = '<div style="text-align:center; padding:20px; color:var(--dim); font-size:12px;">你还没有点赞过公式</div>';
-        return;
-    }
-    
-    try {
-        const parsed = JSON.parse(data);
-        const likedFormulas = Object.keys(parsed).filter(k => parsed[k].liked === true);
-        
-        if (likedFormulas.length === 0) {
-            container.innerHTML = '<div style="text-align:center; padding:20px; color:var(--dim); font-size:12px;">你还没有点赞过公式</div>';
-            return;
-        }
-        
-        container.innerHTML = likedFormulas.map(name => `
-            <div class="member-item">
-                <div class="mi-header">
-                    <span class="mi-title">👑 ${name}</span>
-                    <span class="mi-time" style="color:var(--danger);">❤️ 已点赞</span>
-                </div>
-                <div class="mi-content" style="font-size:12px; color:var(--dim);">该公式已被你加入重点关注列表。</div>
-            </div>
-        `).join('');
-    } catch(e) {
-        container.innerHTML = '<div style="text-align:center; color:var(--danger); padding:10px;">加载点赞失败</div>';
-    }
-}
-
-/* ============================================================
- *  评论功能 (帖子内)
- * ============================================================ */
+// 🌟 现在获取评论会按照公式名字来过滤
 async function fetchComments() {
     if (!supabaseClient || !currentPostData) return;
     try {
@@ -797,12 +609,9 @@ async function fetchComments() {
     }
 }
 
+// 🌟 提交评论时带上公式名字
 async function submitComment() {
-    if (!currentCloudUser) {
-        alert('请先登录！');
-        openAuthModal();
-        return;
-    }
+    if (!currentCloudUser) return alert('请先登录！');
     if (!supabaseClient) return alert('请先配置数据库！');
     if (!currentPostData) return;
     
@@ -816,12 +625,12 @@ async function submitComment() {
             { 
                 user_name: currentCloudUser, 
                 content: text,
-                formula_name: currentPostData.name 
+                formula_name: currentPostData.name // 🌟 绑定公式
             }
         ]);
         if (error) throw error;
         input.value = '';
-        fetchComments();
+        fetchComments(); // 刷新评论列表
     } catch (e) {
         alert('发送失败：' + e.message);
     } finally {
@@ -830,7 +639,7 @@ async function submitComment() {
 }
 
 /* ============================================================
- *  预测核心引擎与页面控制
+ *  预测核心引擎
  * ============================================================ */
 let globalResults = [];
 let currentCategory = 'all'; 
@@ -846,10 +655,6 @@ document.addEventListener('DOMContentLoaded', () => {
     updateUserUI();
     refreshData(true);
 });
-
-function closePage(pageId) {
-    document.getElementById(pageId).classList.remove('show');
-}
 
 async function refreshData(isSilent = false) {
     const overlay = document.getElementById('loadingOverlay');
@@ -1203,11 +1008,16 @@ function openPost(index) {
 
         document.getElementById('postPage').classList.add('show');
         
-        fetchComments(); // 加载当前帖子的评论
+        // 🌟 每次打开帖子，加载该公式的专属评论
+        fetchComments();
         
     } catch(e) {
         console.error(e);
     }
+}
+
+function closePost() {
+    document.getElementById('postPage').classList.remove('show');
 }
 
 function changeHistoryLimit() {
